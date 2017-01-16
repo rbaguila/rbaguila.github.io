@@ -1,3 +1,3 @@
 # RBAguila Personal Website
 
-rbaguila.github.io
+https://rbaguila.github.io
