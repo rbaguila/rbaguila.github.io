@@ -1,757 +1,1470 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roi Aguila - Full-Stack Developer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #1a1a1a;
+            --bg-card: #1f1f1f;
+            --text-primary: #e4e4e7;
+            --text-secondary: #a1a1aa;
+            --accent-primary: #60a5fa;
+            --accent-secondary: #93c5fd;
+            --accent-tertiary: #3b82f6;
+            --accent-web3: #10b981;
+            --border-color: #2a2a2a;
+            --gold-glow: rgba(96, 165, 250, 0.3);
+        }
 
-    <title>RBAguila</title>
+        [data-theme="light"] {
+            --bg-primary: #ffffff;
+            --bg-secondary: #fafaf9;
+            --bg-card: #ffffff;
+            --text-primary: #1a1a1a;
+            --text-secondary: #64748b;
+            --accent-primary: #60a5fa;
+            --accent-secondary: #93c5fd;
+            --accent-tertiary: #3b82f6;
+            --accent-web3: #10b981;
+            --border-color: #e7e5e4;
+            --gold-glow: rgba(96, 165, 250, 0.2);
+        }
 
-    <!-- Bootstrap Core CSS -->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
 
-    <!-- Theme CSS -->
-    <link href="css/rbaguila.min.css" rel="stylesheet">
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: var(--bg-secondary);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
 
-    <!-- Custom Fonts -->
-    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+        nav.scrolled {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
 
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--accent-primary);
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            padding: 0.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.05);
+            border-color: var(--accent-primary);
+        }
+
+        .theme-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6rem 2rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            text-align: center;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 40px var(--gold-glow);
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            min-height: 2rem;
+        }
+
+        .typewriter {
+            display: inline-block;
+            border-right: 2px solid var(--accent-primary);
+            animation: blink 0.7s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { border-color: var(--accent-primary); }
+            51%, 100% { border-color: transparent; }
+        }
+
+        .hero-description {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.875rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-block;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: #000;
+            box-shadow: 0 4px 15px var(--gold-glow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px var(--gold-glow);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid var(--accent-primary);
+            color: var(--accent-primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--accent-primary);
+            color: #000;
+            box-shadow: 0 4px 15px var(--gold-glow);
+        }
+
+        /* Tech Ticker */
+        .tech-ticker {
+            margin-top: 3rem;
+            overflow: hidden;
+            padding: 1rem 0;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .ticker-content {
+            display: flex;
+            gap: 2rem;
+            animation: scroll 30s linear infinite;
+        }
+
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .tech-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            white-space: nowrap;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .tech-item:hover {
+            transform: scale(1.1);
+            color: var(--accent-primary);
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 20px var(--gold-glow);
+            animation-play-state: paused;
+        }
+
+        /* Section Styles */
+        section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* Skills Filter */
+        .skills-filter {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: #000;
+            border-color: var(--accent-primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px var(--gold-glow);
+        }
+
+        /* Projects Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 30px var(--gold-glow);
+            border-color: var(--accent-primary);
+        }
+
+        .project-card.web3:hover {
+            border-color: var(--accent-web3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 30px rgba(16, 185, 129, 0.3);
+        }
+
+        .project-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, var(--accent-tertiary), var(--accent-primary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .project-card.web3 .project-image {
+            background: linear-gradient(135deg, var(--accent-web3), var(--accent-tertiary));
+        }
+
+        .project-content {
+            padding: 1.5rem;
+        }
+
+        .project-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-description {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .tag {
+            padding: 0.25rem 0.75rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .project-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .project-link {
+            color: var(--accent-primary);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .project-link:hover {
+            color: var(--accent-secondary);
+            text-shadow: 0 0 10px var(--gold-glow);
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--accent-primary), var(--accent-tertiary));
+        }
+
+        .timeline-item {
+            display: flex;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .timeline-item:nth-child(odd) {
+            flex-direction: row;
+        }
+
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-content {
+            width: 45%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .timeline-content:hover {
+            transform: scale(1.05);
+            border-color: var(--accent-primary);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 20px var(--gold-glow);
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 16px;
+            height: 16px;
+            background: var(--accent-primary);
+            border: 3px solid var(--bg-primary);
+            border-radius: 50%;
+            z-index: 1;
+            box-shadow: 0 0 15px var(--gold-glow);
+        }
+
+        .timeline-year {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .timeline-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+
+        /* Contact Section */
+        .contact-content {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .social-link {
+            width: 50px;
+            height: 50px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 1.5rem;
+        }
+
+        .social-link:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3), 0 0 20px var(--gold-glow);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 2rem;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--bg-secondary);
+                flex-direction: column;
+                padding: 1rem;
+                border-bottom: 1px solid var(--border-color);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .timeline::before {
+                left: 0;
+            }
+
+            .timeline-item {
+                flex-direction: column !important;
+            }
+
+            .timeline-content {
+                width: 100%;
+                margin-left: 2rem;
+            }
+
+            .timeline-dot {
+                left: 0;
+                transform: translateX(-50%);
+            }
+        }
+
+        /* Scroll to top button */
+        .scroll-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            cursor: pointer;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            z-index: 999;
+            box-shadow: 0 4px 15px var(--gold-glow);
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px var(--gold-glow);
+        }
+    </style>
 </head>
-
-<body id="page-top" class="index">
-
+<body data-theme="dark">
     <!-- Navigation -->
-    <nav id="mainNav" class="navbar navbar-default navbar-fixed-top navbar-custom">
-        <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header page-scroll">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
-                </button>
-                <a class="navbar-brand" href="#page-top">RBAguila</a>
-            </div>
-
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="hidden">
-                        <a href="#page-top"></a>
-                    </li>
-                    <li class="page-scroll">
-                        <a href="#portfolio">Portfolio</a>
-                    </li>
-                    <li class="page-scroll">
-                        <a href="#about">About</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <div class="logo">Roi Aguila</div>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="#projects" class="nav-link">Projects</a></li>
+                <li><a href="#journey" class="nav-link">Journey</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+                <li>
+                    <button class="theme-toggle" onclick="toggleTheme()">
+                        <span class="theme-icon">🌙</span>
+                    </button>
+                </li>
+            </ul>
         </div>
-        <!-- /.container-fluid -->
     </nav>
 
-    <!-- Header -->
-    <header>
-        <div class="container" style="padding-top:150px">
-            <div class="row">
-                <div class="col-lg-12">
-                    <img class="img-responsive" src="img/roi-avatar.png" alt="">
-                    <div class="intro-text">
-                        <span class="name">Roi Aguila</span>
-                        <hr class="star-light">
-                        <span class="skills">Web2 & Web3 Developer - Teacher</span>
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Roi Aguila</h1>
+            <div class="hero-subtitle">
+                <span class="typewriter" id="typewriter"></span>
+            </div>
+            <p class="hero-description">
+                With 10+ years of experience and a Master's degree in IT, I specialize in building robust web applications
+                across Web2 & Web3. From WordPress & Wix sites to blockchain dApps, I bring ideas to life with clean code
+                and thoughtful architecture.
+            </p>
+            <div class="cta-buttons">
+                <a href="#projects" class="btn btn-primary">View My Work</a>
+                <a href="#contact" class="btn btn-secondary">Get In Touch</a>
+            </div>
+
+            <!-- Tech Ticker -->
+            <div class="tech-ticker">
+                <div class="ticker-content" id="tickerContent">
+                    <span class="tech-item">⚛️ React</span>
+                    <span class="tech-item">📦 Next.js</span>
+                    <span class="tech-item">🟢 Node.js</span>
+                    <span class="tech-item">🐘 PHP</span>
+                    <span class="tech-item">💎 Ruby on Rails</span>
+                    <span class="tech-item">🐍 Python</span>
+                    <span class="tech-item">📜 TypeScript</span>
+                    <span class="tech-item">⛓️ Solidity</span>
+                    <span class="tech-item">🔷 Ethereum</span>
+                    <span class="tech-item">🟣 Polygon</span>
+                    <span class="tech-item">🍃 MongoDB</span>
+                    <span class="tech-item">🐬 MySQL</span>
+                    <span class="tech-item">🎨 TailwindCSS</span>
+                    <span class="tech-item">🚀 Express</span>
+                    <!-- Duplicate for seamless loop -->
+                    <span class="tech-item">⚛️ React</span>
+                    <span class="tech-item">📦 Next.js</span>
+                    <span class="tech-item">🟢 Node.js</span>
+                    <span class="tech-item">🐘 PHP</span>
+                    <span class="tech-item">💎 Ruby on Rails</span>
+                    <span class="tech-item">🐍 Python</span>
+                    <span class="tech-item">📜 TypeScript</span>
+                    <span class="tech-item">⛓️ Solidity</span>
+                    <span class="tech-item">🔷 Ethereum</span>
+                    <span class="tech-item">🟣 Polygon</span>
+                    <span class="tech-item">🍃 MongoDB</span>
+                    <span class="tech-item">🐬 MySQL</span>
+                    <span class="tech-item">🎨 TailwindCSS</span>
+                    <span class="tech-item">🚀 Express</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects">
+        <div class="section-header">
+            <h2>Featured Projects</h2>
+            <p>A selection of my work across Web2 and Web3</p>
+        </div>
+
+        <!-- Skills Filter -->
+        <div class="skills-filter">
+            <button class="filter-btn active" data-filter="all">All Projects</button>
+            <button class="filter-btn" data-filter="web3">Web3</button>
+            <button class="filter-btn" data-filter="web2">Web2</button>
+            <button class="filter-btn" data-filter="fullstack">Full-Stack</button>
+            <button class="filter-btn" data-filter="frontend">Frontend</button>
+            <button class="filter-btn" data-filter="backend">Backend</button>
+            <button class="filter-btn" data-filter="cms">CMS</button>
+        </div>
+
+        <!-- Projects Grid -->
+        <div class="projects-grid" id="projectsGrid">
+            <!-- SHO Studio -->
+            <div class="project-card" data-category="web2 fullstack frontend">
+                <div class="project-image">
+                    <img src="img/portfolio/sho_studio.png" alt="SHO Studio">
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">SHO Studio</h3>
+                    <p class="project-description">
+                        AI-powered manga creation platform for building epic worlds and stories with stunning manga panels.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">Next.js</span>
+                        <span class="tag">TypeScript</span>
+                        <span class="tag">TailwindCSS</span>
+                        <span class="tag">AI</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="#" class="project-link">Coming Soon →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Roastronix Design Studies -->
+            <div class="project-card" data-category="web2">
+                <div class="project-image">
+                    <img src="img/portfolio/roastronix.png" alt="Roastronix Design Studies">
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">Roastronix Design Studies</h3>
+                    <p class="project-description">
+                        Design showcase featuring six distinct design approaches for RoasTronix coffee brand experience.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">Web Design</span>
+                        <span class="tag">UI/UX</span>
+                        <span class="tag">Branding</span>
+                        <span class="tag">HTML/CSS</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://rbaguila.github.io/roastronix/" target="_blank" class="project-link">View Designs →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kusho World Website V2 -->
+            <div class="project-card web3" data-category="web3 web2 frontend">
+                <div class="project-image">
+                    <img src="img/portfolio/kusho_website_v2.png" alt="Kusho World Website V2">
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">Kusho World Website V2</h3>
+                    <p class="project-description">
+                        Modern website for Kusho World featuring immersive design, multiverse storytelling, and community hub.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">Next.js</span>
+                        <span class="tag">TypeScript</span>
+                        <span class="tag">TailwindCSS</span>
+                        <span class="tag">Web Design</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://kushoworld.com/" target="_blank" class="project-link">Visit Site →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kusho World Shop -->
+            <div class="project-card web3" data-category="web3 web2 cms">
+                <div class="project-image">
+                    <img src="img/portfolio/kusho_shop.png" alt="Kusho World Shop">
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">Kusho World Shop</h3>
+                    <p class="project-description">
+                        E-commerce platform for Kusho World merchandise and digital collectibles built on Shopify.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">Shopify</span>
+                        <span class="tag">E-commerce</span>
+                        <span class="tag">Web Design</span>
+                        <span class="tag">NFT</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://shop.kushoworld.com/" target="_blank" class="project-link">Visit Shop →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Arkada Games -->
+            <div class="project-card web3" data-category="web3 web2 frontend">
+                <div class="project-image">
+                    <img src="img/portfolio/arkada_games.png" alt="Arkada Games">
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">Arkada Games</h3>
+                    <p class="project-description">
+                        Modern gaming platform website built with Next.js and TailwindCSS, featuring game showcases and community features.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">Next.js</span>
+                        <span class="tag">TypeScript</span>
+                        <span class="tag">TailwindCSS</span>
+                        <span class="tag">Web Design</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://www.arkada.games/" target="_blank" class="project-link">Visit Site →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ChickenSaga Website -->
+            <div class="project-card web3" data-category="web3 frontend">
+                <div class="project-image">
+                    <img src="img/portfolio/chickensaga_website.png" alt="ChickenSaga Website">
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">ChickenSaga Website</h3>
+                    <p class="project-description">
+                        Official website for ChickenSaga Web3 gaming platform, showcasing game features and community.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">Next.js</span>
+                        <span class="tag">TypeScript</span>
+                        <span class="tag">Web3</span>
+                        <span class="tag">Gaming</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://www.chickensaga.com/" target="_blank" class="project-link">Visit Site →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ChickenSaga Game -->
+            <div class="project-card web3" data-category="web3 frontend">
+                <div class="project-image">
+                    <img src="img/portfolio/chickensaga_game.png" alt="ChickenSaga Game">
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">ChickenSaga Game</h3>
+                    <p class="project-description">
+                        Web3 gaming application with blockchain integration, featuring immersive gameplay and NFT mechanics.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">Next.js</span>
+                        <span class="tag">TypeScript</span>
+                        <span class="tag">Web3</span>
+                        <span class="tag">Gaming</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://app.chickensaga.com/" target="_blank" class="project-link">Play Game →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kusho World Website V1 -->
+            <div class="project-card web3" data-category="web3 web2 cms">
+                <div class="project-image">
+                    <img src="img/portfolio/kusho_website_v1.png" alt="Kusho World Website V1">
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">Kusho World Website V1</h3>
+                    <p class="project-description">
+                        Original Wix-based website for Kusho World NFT project with vibrant design and community features.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">Wix</span>
+                        <span class="tag">Web Design</span>
+                        <span class="tag">NFT</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://aroinand.wixsite.com/kusho" target="_blank" class="project-link">Visit Site →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kusho Familiars Decoupling -->
+            <div class="project-card web3" data-category="web3 frontend">
+                <div class="project-image">
+                    <img src="img/portfolio/kusho_decouple.png" alt="Familiars Decoupling">
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">Familiars Decoupling</h3>
+                    <p class="project-description">
+                        Web3 application for Kusho World NFT holders to decouple their familiars into a separate collection.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">Next.js</span>
+                        <span class="tag">TypeScript</span>
+                        <span class="tag">TailwindCSS</span>
+                        <span class="tag">Web3</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://decouple.kushoworld.com/" target="_blank" class="project-link">Live Demo →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kusho Staking App -->
+            <div class="project-card web3" data-category="web3 frontend">
+                <div class="project-image">
+                    <img src="img/portfolio/minka_token.gif" alt="Kusho Staking App">
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">Kusho Staking App</h3>
+                    <p class="project-description">
+                        Decentralized staking application built with modern web technologies and smart contracts.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">Next.js</span>
+                        <span class="tag">TypeScript</span>
+                        <span class="tag">TailwindCSS</span>
+                        <span class="tag">Solidity</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://kusho-staking.vercel.app/" target="_blank" class="project-link">Live Demo →</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- SALIS MIS -->
+            <div class="project-card" data-category="web2 fullstack">
+                <div class="project-image">
+                    <img src="img/portfolio/SALIS.png" alt="SALIS MIS">
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">SALIS MIS</h3>
+                    <p class="project-description">
+                        School grading and management information system with comprehensive student tracking.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">Loopback</span>
+                        <span class="tag">React</span>
+                        <span class="tag">Semantic UI</span>
+                        <span class="tag">MongoDB</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="http://mis.salisonline.com/" target="_blank" class="project-link">Visit Site →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SALIS Online Website -->
+            <div class="project-card" data-category="web2 cms">
+                <div class="project-image">
+                    <img src="img/portfolio/salis_website.png" alt="SALIS Online Website">
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">SALIS Online Website</h3>
+                    <p class="project-description">
+                        Official website for St. Alphonsus Liguori Integrated School built with Google Sites.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">Google Sites</span>
+                        <span class="tag">Web Design</span>
+                        <span class="tag">Education</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://www.salisonline.com/" target="_blank" class="project-link">Visit Site →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Easybeneftz -->
+            <div class="project-card" data-category="web2 fullstack backend">
+                <div class="project-image">
+                    <img src="img/portfolio/easybeneftz.png" alt="Easybeneftz">
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">Easybeneftz</h3>
+                    <p class="project-description">
+                        Enterprise billing system with automated invoicing, payment tracking, and reporting.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">Loopback</span>
+                        <span class="tag">React</span>
+                        <span class="tag">Semantic UI</span>
+                        <span class="tag">REST API</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="#" class="project-link">Private Project</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dental Records System -->
+            <div class="project-card" data-category="web2 fullstack">
+                <div class="project-image">
+                    <img src="img/portfolio/mrs.png" alt="Dental Records System">
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">Dental Records System</h3>
+                    <p class="project-description">
+                        Dental records management system with patient tracking, appointment scheduling, and billing.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">Loopback</span>
+                        <span class="tag">React</span>
+                        <span class="tag">Semantic UI</span>
+                        <span class="tag">MongoDB</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="#" class="project-link">Private Project</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project SARAI -->
+            <div class="project-card" data-category="web2 fullstack">
+                <div class="project-image">
+                    <img src="img/portfolio/sarai.png" alt="Project SARAI">
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">Project SARAI</h3>
+                    <p class="project-description">
+                        Agricultural information system providing farmers with data-driven insights and forecasts.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">MeteorJS</span>
+                        <span class="tag">MongoDB</span>
+                        <span class="tag">Real-time</span>
+                        <span class="tag">Data Viz</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="http://sarai.ph" target="_blank" class="project-link">Visit Site →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DPITC Portal -->
+            <div class="project-card" data-category="web2 backend fullstack">
+                <div class="project-image">
+                    <img src="img/portfolio/dpitc_screenshot.png" alt="DPITC Portal">
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">DPITC Portal</h3>
+                    <p class="project-description">
+                        Innovation technology program portal for PCAARRD with project management features.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">Node.js</span>
+                        <span class="tag">Express</span>
+                        <span class="tag">MongoDB</span>
+                        <span class="tag">REST API</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="#" class="project-link">Case Study →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- UPLB COSS Website -->
+            <div class="project-card" data-category="web2">
+                <div class="project-image">
+                    <img src="img/portfolio/coss_screenshot.png" alt="UPLB COSS Website">
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">UPLB COSS Website</h3>
+                    <p class="project-description">
+                        Website for UPLB Computer Science Society with event listings and PayPal donation integration.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">HTML</span>
+                        <span class="tag">CSS</span>
+                        <span class="tag">Material CSS</span>
+                        <span class="tag">JavaScript</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://uplbcoss.github.io/" target="_blank" class="project-link">Visit Site →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Foliage Resort -->
+            <div class="project-card" data-category="web2 cms">
+                <div class="project-image">
+                    <img src="img/portfolio/foliage.png" alt="Foliage Resort">
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">Foliage Resort</h3>
+                    <p class="project-description">
+                        Resort booking and management website with reservation system and gallery.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">WordPress</span>
+                        <span class="tag">PHP</span>
+                        <span class="tag">MySQL</span>
+                        <span class="tag">JavaScript</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="http://foliageresort.com" target="_blank" class="project-link">Visit Site →</a>
                     </div>
                 </div>
             </div>
         </div>
-    </header>
+    </section>
 
-    <!-- Portfolio Grid Section -->
-    <section id="portfolio" style="padding-top:50px">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h2>Portfolio</h2>
-                    <hr class="star-primary">
+    <!-- Journey Timeline -->
+    <section id="journey">
+        <div class="section-header">
+            <h2>My Journey</h2>
+            <p>Key milestones in my development career</p>
+        </div>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-year">2022</div>
+                    <div class="timeline-title">Web3 Expansion</div>
+                    <div class="timeline-description">
+                        Dove deep into blockchain development, creating NFT minting and staking platforms for Kusho World and Burning Dragons.
+                    </div>
+                    <div class="timeline-tech">
+                        <span class="tag">Solidity</span>
+                        <span class="tag">Next.js</span>
+                        <span class="tag">TypeScript</span>
+                        <span class="tag">Web3.js</span>
+                    </div>
                 </div>
+                <div class="timeline-dot"></div>
             </div>
-            <div class="row">
-                <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal1" class="portfolio-link" data-toggle="modal">
-                        <div class="caption">
-                            <div class="caption-content">
-                                <i class="fa fa-search-plus fa-3x"></i>
-                            </div>
-                        </div>
-                        <img src="img/portfolio/sarai.png" class="img-responsive img-centered" alt="">
-                    </a>
+
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-year">2017 - 2021</div>
+                    <div class="timeline-title">Full-Stack Development</div>
+                    <div class="timeline-description">
+                        Built enterprise applications including billing systems, school management platforms, and dental records systems.
+                    </div>
+                    <div class="timeline-tech">
+                        <span class="tag">Loopback</span>
+                        <span class="tag">React</span>
+                        <span class="tag">MongoDB</span>
+                        <span class="tag">REST APIs</span>
+                    </div>
                 </div>
-                <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal2" class="portfolio-link" data-toggle="modal">
-                        <div class="caption">
-                            <div class="caption-content">
-                                <i class="fa fa-search-plus fa-3x"></i>
-                            </div>
-                        </div>
-                        <img src="img/portfolio/foliage.png" class="img-responsive img-centered" alt="">
-                    </a>
+                <div class="timeline-dot"></div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-year">2016</div>
+                    <div class="timeline-title">Masters in IT</div>
+                    <div class="timeline-description">
+                        Completed Masters of Information Technology, deepening expertise in software architecture and system design.
+                    </div>
+                    <div class="timeline-tech">
+                        <span class="tag">Research</span>
+                        <span class="tag">Architecture</span>
+                        <span class="tag">Systems</span>
+                    </div>
                 </div>
-                <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal3" class="portfolio-link" data-toggle="modal">
-                        <div class="caption">
-                            <div class="caption-content">
-                                <i class="fa fa-search-plus fa-3x"></i>
-                            </div>
-                        </div>
-                        <img src="img/portfolio/dpitc.png" class="img-responsive img-centered" alt="" width="190px">
-                    </a>
+                <div class="timeline-dot"></div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-year">2013 - 2016</div>
+                    <div class="timeline-title">Project SARAI & Early Career</div>
+                    <div class="timeline-description">
+                        Led development of agricultural information system using MeteorJS. Started teaching web development courses.
+                    </div>
+                    <div class="timeline-tech">
+                        <span class="tag">MeteorJS</span>
+                        <span class="tag">MongoDB</span>
+                        <span class="tag">Real-time</span>
+                        <span class="tag">Teaching</span>
+                    </div>
                 </div>
-                <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal4" class="portfolio-link" data-toggle="modal">
-                        <div class="caption">
-                            <div class="caption-content">
-                                <i class="fa fa-search-plus fa-3x"></i>
-                            </div>
-                        </div>
-                        <img src="img/portfolio/uplb_coss.png" class="img-responsive img-centered" alt="">
-                    </a>
+                <div class="timeline-dot"></div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-year">2013</div>
+                    <div class="timeline-title">BS Computer Science</div>
+                    <div class="timeline-description">
+                        Graduated with Bachelor of Science in Computer Science, building foundation in programming and software development.
+                    </div>
+                    <div class="timeline-tech">
+                        <span class="tag">Fundamentals</span>
+                        <span class="tag">Algorithms</span>
+                        <span class="tag">Data Structures</span>
+                    </div>
                 </div>
-                <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal5" class="portfolio-link" data-toggle="modal">
-                        <div class="caption">
-                            <div class="caption-content">
-                                <i class="fa fa-search-plus fa-3x"></i>
-                            </div>
-                        </div>
-                        <img src="img/portfolio/SALIS.png" class="img-responsive img-centered" alt="">
-                    </a>
-                </div>
-                <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal6" class="portfolio-link" data-toggle="modal">
-                        <div class="caption">
-                            <div class="caption-content">
-                                <i class="fa fa-search-plus fa-3x"></i>
-                            </div>
-                        </div>
-                        <img src="img/portfolio/mrs.png" class="img-responsive img-centered" alt="">
-                    </a>
-                </div>
-                <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal7" class="portfolio-link" data-toggle="modal">
-                        <div class="caption">
-                            <div class="caption-content">
-                                <i class="fa fa-search-plus fa-3x"></i>
-                            </div>
-                        </div>
-                        <img src="img/portfolio/easybeneftz.png" class="img-responsive img-centered" alt="">
-                    </a>
-                </div>
-                <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal8" class="portfolio-link" data-toggle="modal">
-                        <div class="caption">
-                            <div class="caption-content">
-                                <i class="fa fa-search-plus fa-3x"></i>
-                            </div>
-                        </div>
-                        <img src="img/portfolio/kusho_logo.png" class="img-responsive img-centered" alt="">
-                    </a>
-                </div>
-                <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal9" class="portfolio-link" data-toggle="modal">
-                        <div class="caption">
-                            <div class="caption-content">
-                                <i class="fa fa-search-plus fa-3x"></i>
-                            </div>
-                        </div>
-                        <img src="img/portfolio/kusho_arcade.gif" class="img-responsive img-centered" alt="">
-                    </a>
-                </div>
-                <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal10" class="portfolio-link" data-toggle="modal">
-                        <div class="caption">
-                            <div class="caption-content">
-                                <i class="fa fa-search-plus fa-3x"></i>
-                            </div>
-                        </div>
-                        <img src="img/portfolio/minka_token.gif" class="img-responsive img-centered" alt="">
-                    </a>
-                </div>
-                <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal11" class="portfolio-link" data-toggle="modal">
-                        <div class="caption">
-                            <div class="caption-content">
-                                <i class="fa fa-search-plus fa-3x"></i>
-                            </div>
-                        </div>
-                        <img src="img/portfolio/dwagons_logo.png" class="img-responsive img-centered" alt="">
-                    </a>
-                </div>
-                <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal12" class="portfolio-link" data-toggle="modal">
-                        <div class="caption">
-                            <div class="caption-content">
-                                <i class="fa fa-search-plus fa-3x"></i>
-                            </div>
-                        </div>
-                        <img src="img/portfolio/shards.gif" class="img-responsive img-centered" alt="">
-                    </a>
-                </div>
+                <div class="timeline-dot"></div>
             </div>
         </div>
     </section>
 
-    <!-- About Section -->
-    <section class="success" id="about">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h2>About Me</h2>
-                    <hr class="star-light">
-                </div>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="section-header">
+            <h2>Let's Work Together</h2>
+            <p>Available for web development projects, blockchain development, and CMS solutions</p>
+        </div>
+
+        <div class="contact-content">
+            <p style="margin-bottom: 2rem; font-size: 1.1rem;">
+                With 10+ years of experience, I offer comprehensive web development services including custom web applications,
+                WordPress & Wix development, blockchain dApps (Ethereum/Polygon), UI/UX design, and full-stack solutions.
+                Whether you need a responsive website, smart contract development, or CMS integration, I deliver reliable
+                and professional results.
+            </p>
+            <div class="cta-buttons">
+                <a href="mailto:aroinand@gmail.com" class="btn btn-primary">Send Email</a>
+                <a href="mailto:aroinand@gmail.com?subject=Request for CV" class="btn btn-secondary">Email for CV</a>
             </div>
-            <div class="row">
-                <div class="col-lg-4">
-                    <p>I am a Full-Stack Web Developer with a passion for building engaging and innovative web applications. With extensive knowledge in PHP and JavaScript frameworks, I have developed web applications using a variety of technologies, including HTML, CSS, JavaScript, Node, Express, MeteorJS, Ruby on Rails, Python, MySQL, and MongoDB. In addition, I have experience deploying and maintaining servers using NGINX, Apache, and Tomcat.</p>
-                    
-                </div>
-                <div class="col-lg-4">
-                    <p>Throughout my career, I have enjoyed managing and supervising development teams, using my communication skills to ensure successful project outcomes. I also have a passion for teaching and have served as a trainer and instructor for a variety of courses, such as "Introduction to the Internet," "Introduction to Computer Science," "Basics of Mobile Development (Android Native)," and "Web Programming."</p>
-                    <p>Since earning my BS in Computer Science in April of 2013 and my Masters of Information Technology in December of 2016, I have worked on both industry and research projects, developing a wide range of applications. Recently, I have been exploring the emerging technologies behind web3 and have gained experience in developing smart contracts on the Ethereum and Polygon blockchains. </p>
-                </div>
-                <div class="col-lg-4">
-                    <p>In my free time, I enjoy exploring new technologies and working on personal projects. Recently, I spearheaded the development of Kusho World and Burning Dragons websites, art generation, smart contract development, and minting app development.</p>
-                    <p>If you're looking for a skilled Full-Stack Web Developer with experience in a variety of web technologies and a passion for innovation, I would love to hear from you. Please feel free to contact me to discuss how I can bring my skills and experience to your project.</p>
-                </div>
+
+            <div class="social-links">
+                <a href="https://github.com/rbaguila" target="_blank" class="social-link" title="GitHub">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                </a>
+                <a href="https://www.linkedin.com/in/rbaguila" target="_blank" class="social-link" title="LinkedIn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                    </svg>
+                </a>
+                <a href="https://twitter.com/roikyuu" target="_blank" class="social-link" title="Twitter">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                    </svg>
+                </a>
+                <a href="https://www.facebook.com/roinand.aguila" target="_blank" class="social-link" title="Facebook">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/>
+                    </svg>
+                </a>
+                <a href="https://www.upwork.com/freelancers/~01b96baf3f583a0a5b" target="_blank" class="social-link" title="Upwork">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M18.561 13.158c-1.102 0-2.135-.467-3.074-1.227l.228-1.076.008-.042c.207-1.143.849-3.06 2.839-3.06 1.492 0 2.703 1.212 2.703 2.703-.001 1.489-1.212 2.702-2.704 2.702zm0-8.14c-2.539 0-4.51 1.649-5.31 4.366-1.22-1.834-2.148-4.036-2.687-5.892H7.828v7.112c-.002 1.406-1.141 2.546-2.547 2.548-1.405-.002-2.543-1.143-2.545-2.548V3.492H0v7.112c0 2.914 2.37 5.303 5.281 5.303 2.913 0 5.283-2.389 5.283-5.303v-1.19c.529 1.107 1.182 2.229 1.974 3.221l-1.673 7.873h2.797l1.213-5.71c1.063.679 2.285 1.109 3.686 1.109 3 0 5.439-2.452 5.439-5.45 0-3-2.439-5.439-5.439-5.439z"/>
+                    </svg>
+                </a>
             </div>
         </div>
     </section>
-
 
     <!-- Footer -->
-    <footer class="text-center">
-        <div class="footer-above">
-            <div class="container">
-                <div class="row">
-                    <div class="footer-col col-md-4">
-                        <h3>Location</h3>
-                        <p>Dasmarinas,
-                        <br>Cavite, Philippines</p>
-                    </div>
-                    <div class="footer-col col-md-4">
-                        <h3>Around the Web</h3>
-                        <ul class="list-inline">
-                            <li>
-                                <a href="https://www.facebook.com/roinand.aguila" class="btn-social btn-outline"><i class="fa fa-fw fa-facebook"></i></a>
-                            </li>
-                            <li>
-                                <a href="https://twitter.com/roikyuu" class="btn-social btn-outline"><i class="fa fa-fw fa-twitter"></i></a>
-                            </li>
-                            <li>
-                                <a href="https://www.linkedin.com/profile/edit?locale=en_US&trk=profile-preview" class="btn-social btn-outline"><i class="fa fa-fw fa-linkedin"></i></a>
-                            </li>
-                            <li>
-                                <a href="https://github.com/rbaguila" class="btn-social btn-outline"><i class="fa fa-fw fa-github"></i></a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="footer-col col-md-4">
-                        <h3>About the Template and Icons</h3>
-                        <p>Freelancer template is a free to use, open source Bootstrap theme created by <a href="http://startbootstrap.com">Start Bootstrap</a>.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="footer-below">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        Icons made by <a href="http://www.flaticon.com/authors/ocha" title="OCHA">OCHA</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
-                        <br />
-                        Copyright &copy; RBAguila 2022 <br>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <footer>
+        <p>© 2025 Roi Aguila. Built with passion for clean code and great UX.</p>
+        <p style="margin-top: 0.5rem; font-size: 0.9rem;">Dasmarinas, Cavite, Philippines</p>
     </footer>
 
-    <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes) -->
-    <div class="scroll-top page-scroll hidden-sm hidden-xs hidden-lg hidden-md">
-        <a class="btn btn-primary" href="#page-top">
-            <i class="fa fa-chevron-up"></i>
-        </a>
+    <!-- Scroll to Top Button -->
+    <div class="scroll-top" id="scrollTop" onclick="scrollToTop()">
+        ↑
     </div>
 
-    <!-- Portfolio Modals -->
-    <div class="portfolio-modal modal fade" id="portfolioModal1" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-content">
-            <div class="close-modal" data-dismiss="modal">
-                <div class="lr">
-                    <div class="rl">
-                    </div>
-                </div>
-            </div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-8 col-lg-offset-2">
-                        <div class="modal-body">
-                            <h2>Project SARAI BETA</h2>
-                            <hr class="star-primary">
-                            <img src="img/portfolio/sarai.png" class="img-responsive img-centered" alt="">
-                            <p>A Website for Project SARAI using MeteorJS. Accessible at <a href="http://sarai.ph" target="_blank">sarai.ph</a></p>
-                            <ul class="list-inline item-details">
-                                <li>Client:
-                                    <strong>Project SARAI
-                                    </strong>
-                                </li>
-                                <li>Date:
-                                    <strong>2013 - 2016
-                                    </strong>
-                                </li>
-                                <li>Service:
-                                    <strong>Web Development
-                                    </strong>
-                                </li>
-                            </ul>
-                            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="portfolio-modal modal fade" id="portfolioModal2" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-content">
-            <div class="close-modal" data-dismiss="modal">
-                <div class="lr">
-                    <div class="rl">
-                    </div>
-                </div>
-            </div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-8 col-lg-offset-2">
-                        <div class="modal-body">
-                            <h2>Foliage Resort</h2>
-                            <hr class="star-primary">
-                            <img src="img/portfolio/foliage.png" class="img-responsive img-centered" style="padding: 10px;border-radius: 5px;" alt="">
-                            <p>A Website for Tierra Resorts using PHP and MySQL. Accessible at <a href="http://foliageresort.com" target="_blank">foliageresort.com </a></p>
-                            <ul class="list-inline item-details">
-                                <li>Client:
-                                    <strong>Foliage Resorts
-                                    </strong>
-                                </li>
-                                <li>Date:
-                                    <strong>January 2015
-                                    </strong>
-                                </li>
-                                <li>Service:
-                                    <strong>Web Development
-                                    </strong>
-                                </li>
-                            </ul>
-                            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="portfolio-modal modal fade" id="portfolioModal3" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-content">
-            <div class="close-modal" data-dismiss="modal">
-                <div class="lr">
-                    <div class="rl">
-                    </div>
-                </div>
-            </div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-8 col-lg-offset-2">
-                        <div class="modal-body">
-                            <h2>DPITC Portal Alpha Version</h2>
-                            <hr class="star-primary">
-                            <img src="img/portfolio/dpitc_screenshot.png" class="img-responsive img-centered" alt="" width="1080px">
-                            <p>A website for PCAARRD’s innovation technology program using NodeJS, Express and MongoDB.</p>
-                            <ul class="list-inline item-details">
-                                <li>Client:
-                                    <strong>DOST-PCAARRD
-                                    </strong>
-                                </li>
-                                <li>Date:
-                                    <strong>June 2016
-                                    </strong>
-                                </li>
-                                <li>Service:
-                                    <strong>Web Development
-                                    </strong>
-                                </li>
-                            </ul>
-                            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="portfolio-modal modal fade" id="portfolioModal4" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-content">
-            <div class="close-modal" data-dismiss="modal">
-                <div class="lr">
-                    <div class="rl">
-                    </div>
-                </div>
-            </div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-8 col-lg-offset-2">
-                        <div class="modal-body">
-                            <h2>UPLB COSS Website</h2>
-                            <hr class="star-primary">
-                            <img src="img/portfolio/coss_screenshot.png" class="img-responsive img-centered" alt="">
-                            <p>A simple website made by asic HTML and CSS using Material CSS Library with Paypal Donation Link. Accessible at <a href="https://uplbcoss.github.io/" target="_blank">uplbcoss.github.io</a></p>
-                            <ul class="list-inline item-details">
-                                <li>Client:
-                                    <strong>UPLB Computer Science Society
-                                    </strong>
-                                </li>
-                                <li>Date:
-                                    <strong>January 2016
-                                    </strong>
-                                </li>
-                                <li>Service:
-                                    <strong>Website Development
-                                    </strong>
-                                </li>
-                            </ul>
-                            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="portfolio-modal modal fade" id="portfolioModal5" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-content">
-            <div class="close-modal" data-dismiss="modal">
-                <div class="lr">
-                    <div class="rl">
-                    </div>
-                </div>
-            </div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-8 col-lg-offset-2">
-                        <div class="modal-body">
-                            <h2>SALIS MIS</h2>
-                            <hr class="star-primary">
-                            <img src="img/portfolio/salis_screenshot.png" class="img-responsive img-centered" alt="">
-                            <p>A school grading system made by Loopback and React with Semantic UI library. </p>
-                            <ul class="list-inline item-details">
-                                <li>Client:
-                                    <strong>St. Alphonsus Liguori Integrated School
-                                    </strong>
-                                </li>
-                                <li>Date:
-                                    <strong>Ongoing
-                                    </strong>
-                                </li>
-                                <li>Service:
-                                    <strong>Web Development
-                                    </strong>
-                                </li>
-                            </ul>
-                            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="portfolio-modal modal fade" id="portfolioModal6" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-content">
-            <div class="close-modal" data-dismiss="modal">
-                <div class="lr">
-                    <div class="rl">
-                    </div>
-                </div>
-            </div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-8 col-lg-offset-2">
-                        <div class="modal-body">
-                            <h2>Dental Records System</h2>
-                            <hr class="star-primary">
-                            <img src="img/portfolio/mrs_screenshot.png" class="img-responsive img-centered" alt="">
-                            <p>A dental records system made by Loopback and React with Semantic UI library. This was deployed locally.</p>
-                            <ul class="list-inline item-details">
-                                <li>Client:
-                                    <strong>Dr Arellano Dental Clinic
-                                    </strong>
-                                </li>
-                                <li>Date:
-                                    <strong>January 2018
-                                    </strong>
-                                </li>
-                                <li>Service:
-                                    <strong>Web Development
-                                    </strong>
-                                </li>
-                            </ul>
-                            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <script>
+        // Typewriter Effect
+        const titles = [
+            'Full-Stack Web Developer',
+            'Blockchain Developer',
+            'WordPress & Wix Specialist',
+            'UI/UX Designer',
+            'Smart Contract Developer'
+        ];
+        let titleIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        const typewriterElement = document.getElementById('typewriter');
 
-    <div class="portfolio-modal modal fade" id="portfolioModal7" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-content">
-            <div class="close-modal" data-dismiss="modal">
-                <div class="lr">
-                    <div class="rl">
-                    </div>
-                </div>
-            </div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-8 col-lg-offset-2">
-                        <div class="modal-body">
-                            <h2>Easybeneftz</h2>
-                            <hr class="star-primary">
-                            <h3> Web Application Confidential </h3>
-                            <p>A billing system made by Loopback and React with Semantic UI library. This was deployed privately.</p>
-                            <ul class="list-inline item-details">
-                                <li>Client:
-                                    <strong>Confidential
-                                    </strong>
-                                </li>
-                                <li>Date:
-                                    <strong>June 2017 - Ongoing
-                                    </strong>
-                                </li>
-                                <li>Service:
-                                    <strong>Web Development
-                                    </strong>
-                                </li>
-                            </ul>
-                            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="portfolio-modal modal fade" id="portfolioModal8" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-content">
-            <div class="close-modal" data-dismiss="modal">
-                <div class="lr">
-                    <div class="rl">
-                    </div>
-                </div>
-            </div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-8 col-lg-offset-2">
-                        <div class="modal-body">
-                            <h2>Kusho World Website</h2>
-                            <hr class="star-primary">
-                            <img src="img/portfolio/kusho_website_v1.png" class="img-responsive img-centered" alt="">
-                            <p>A Website for Kusho World built in Wix. Accessible at <a href="https://kusho.world" target="_blank">kusho.world</a></p>
-                            <ul class="list-inline item-details">
-                                <li>Client:
-                                    <strong>Kusho World
-                                    </strong>
-                                </li>
-                                <li>Date:
-                                    <strong>2022
-                                    </strong>
-                                </li>
-                                <li>Service:
-                                    <strong>Website Development
-                                    </strong>
-                                </li>
-                            </ul>
-                            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="portfolio-modal modal fade" id="portfolioModal9" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-content">
-            <div class="close-modal" data-dismiss="modal">
-                <div class="lr">
-                    <div class="rl">
-                    </div>
-                </div>
-            </div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-8 col-lg-offset-2">
-                        <div class="modal-body">
-                            <h2>Kusho Minting App</h2>
-                            <hr class="star-primary">
-                            <img src="img/portfolio/kusho_minting.png" class="img-responsive img-centered" alt="">
-                            <p>Developed Kusho's art geration, smart contract and minting dapp site. Art generation and smart contract codes were based of hashlips open source codes. The minting site was developed using React and Redux. Accessible at <a href="https://mint.kushoworld.com/" target="_blank">mint.kushoworld.com</a></p>
-                            <ul class="list-inline item-details">
-                                <li>Client:
-                                    <strong>Kusho World
-                                    </strong>
-                                </li>
-                                <li>Date:
-                                    <strong>2022
-                                    </strong>
-                                </li>
-                                <li>Service:
-                                    <strong>Image Processing, Smart Contract Development, DApp Development
-                                    </strong>
-                                </li>
-                            </ul>
-                            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="portfolio-modal modal fade" id="portfolioModal10" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-content">
-            <div class="close-modal" data-dismiss="modal">
-                <div class="lr">
-                    <div class="rl">
-                    </div>
-                </div>
-            </div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-8 col-lg-offset-2">
-                        <div class="modal-body">
-                            <h2>Kusho Staking App</h2>
-                            <hr class="star-primary">
-                            <img src="img/portfolio/kusho_staking.png" class="img-responsive img-centered" alt="">
-                            <p>Developed Kusho's staking decentralized application. The site was developed using NextJS, TypeScript, and TailwindCSS. Accessible at <a href="https://stake.kushoworld.com/" target="_blank">stake.kushoworld.com</a></p>
-                            <ul class="list-inline item-details">
-                                <li>Client:
-                                    <strong>Kusho World
-                                    </strong>
-                                </li>
-                                <li>Date:
-                                    <strong>2022
-                                    </strong>
-                                </li>
-                                <li>Service:
-                                    <strong>DApp Development
-                                    </strong>
-                                </li>
-                            </ul>
-                            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+        function typeWriter() {
+            const currentTitle = titles[titleIndex];
 
-    <div class="portfolio-modal modal fade" id="portfolioModal11" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-content">
-            <div class="close-modal" data-dismiss="modal">
-                <div class="lr">
-                    <div class="rl">
-                    </div>
-                </div>
-            </div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-8 col-lg-offset-2">
-                        <div class="modal-body">
-                            <h2>Buwning Dwagons Minting App</h2>
-                            <hr class="star-primary">
-                            <img src="img/portfolio/dwagons_minting.png" class="img-responsive img-centered" alt="">
-                            <p>Developed Burning Dragon's art geration, smart contract and minting dapp site. Art generation and smart contract codes were based on my previous web3 project. The minting site was developed using NextJJ, TypeScript, and TailwindCSS. Accessible at <a href="https://dwagons-minting-site.vercel.app/" target="_blank">dwagons-minting-site.vercel.app/</a></p>
-                            <ul class="list-inline item-details">
-                                <li>Client:
-                                    <strong>Burning Dragons
-                                    </strong>
-                                </li>
-                                <li>Date:
-                                    <strong>2022
-                                    </strong>
-                                </li>
-                                <li>Service:
-                                    <strong>Image Processing, Smart Contract Development, DApp Development
-                                    </strong>
-                                </li>
-                            </ul>
-                            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+            if (isDeleting) {
+                typewriterElement.textContent = currentTitle.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typewriterElement.textContent = currentTitle.substring(0, charIndex + 1);
+                charIndex++;
+            }
 
-    <div class="portfolio-modal modal fade" id="portfolioModal12" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-content">
-            <div class="close-modal" data-dismiss="modal">
-                <div class="lr">
-                    <div class="rl">
-                    </div>
-                </div>
-            </div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-8 col-lg-offset-2">
-                        <div class="modal-body">
-                            <h2>Dwagons Staking App</h2>
-                            <hr class="star-primary">
-                            <img src="img/portfolio/dwagons_staking.png" class="img-responsive img-centered" alt="">
-                            <p>Developed Burning Dragon's staking decentralized application. The site was developed using NextJS, TypeScript, and TailwindCSS. Accessible at <a href="https://dwagons-staking.vercel.app/" target="_blank">dwagons-staking.vercel.app/</a></p>
-                            <ul class="list-inline item-details">
-                                <li>Client:
-                                    <strong>Burning Dragons
-                                    </strong>
-                                </li>
-                                <li>Date:
-                                    <strong>2022
-                                    </strong>
-                                </li>
-                                <li>Service:
-                                    <strong>DApp Development
-                                    </strong>
-                                </li>
-                            </ul>
-                            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+            if (!isDeleting && charIndex === currentTitle.length) {
+                setTimeout(() => isDeleting = true, 2000);
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                titleIndex = (titleIndex + 1) % titles.length;
+            }
 
-    <!-- jQuery -->
-    <script src="vendor/jquery/jquery.min.js"></script>
+            const speed = isDeleting ? 50 : 100;
+            setTimeout(typeWriter, speed);
+        }
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+        typeWriter();
 
-    <!-- Plugin JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+        // Theme Toggle
+        function toggleTheme() {
+            const body = document.body;
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            body.setAttribute('data-theme', newTheme);
 
-    <!-- Contact Form JavaScript -->
-    <script src="js/jqBootstrapValidation.js"></script>
-    <script src="js/contact_me.js"></script>
+            const icon = document.querySelector('.theme-icon');
+            icon.textContent = newTheme === 'dark' ? '🌙' : '☀️';
 
-    <!-- Theme JavaScript -->
-    <script src="js/rbaguila.min.js"></script>
+            localStorage.setItem('theme', newTheme);
+        }
 
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        document.body.setAttribute('data-theme', savedTheme);
+        document.querySelector('.theme-icon').textContent = savedTheme === 'dark' ? '🌙' : '☀️';
+
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Active Navigation
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').slice(1) === current) {
+                    link.classList.add('active');
+                }
+            });
+
+            // Navbar scroll effect
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+
+            // Scroll to top button
+            const scrollTop = document.getElementById('scrollTop');
+            if (window.scrollY > 500) {
+                scrollTop.classList.add('visible');
+            } else {
+                scrollTop.classList.remove('visible');
+            }
+        });
+
+        // Scroll to Top
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Intersection Observer for sections
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+        // Project Filter
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const projectCards = document.querySelectorAll('.project-card');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const filter = button.getAttribute('data-filter');
+
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+
+                projectCards.forEach(card => {
+                    if (filter === 'all') {
+                        card.style.display = 'block';
+                    } else {
+                        const categories = card.getAttribute('data-category');
+                        if (categories.includes(filter)) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    }
+                });
+            });
+        });
+
+
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+        }
+
+        // Close mobile menu when clicking a link
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('navLinks').classList.remove('active');
+            });
+        });
+    </script>
 </body>
-
 </html>
