@@ -327,7 +327,7 @@
         /* Projects Grid */
         .projects-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(min(350px, 100%), 1fr));
             gap: 2rem;
         }
 
@@ -593,8 +593,27 @@
                 display: block;
             }
 
+            /* Fix projects grid for mobile */
             .projects-grid {
                 grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            /* Ensure sections are visible on mobile */
+            section {
+                opacity: 1 !important;
+                transform: translateY(0) !important;
+                padding: 3rem 1rem;
+            }
+
+            /* Make filter buttons wrap better on mobile */
+            .skills-filter {
+                gap: 0.5rem;
+            }
+
+            .filter-btn {
+                padding: 0.4rem 1rem;
+                font-size: 0.85rem;
             }
 
             .timeline::before {
